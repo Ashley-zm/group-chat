@@ -1,98 +1,72 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title></title>
-		<script src="js/mui.min.js"></script>
-		<link href="css/mui.min.css" rel="stylesheet" />
-		<link href="css/index.css" />
-		<style>
-			.mui-control-item.mui-active {
-				border-bottom: 3px solid #007aff;
-				color: #007aff !important;
-				background-color: #fff !important;
-				font-size: 18px;
-				border-left: 0px !important;
-			}
-			
-			
-			.mui-btn.mui-btn-primary{
-				margin-top: 20px;
-				width: 80%;
-				margin-left: 10%;
-			}
-			.box{
-				margin-top: 0px;
-				width: 100%;
-			}
-		</style>
-		<script type="text/javascript" charset="utf-8">
-			mui.init();
-		</script>
-	</head>
-	<body style="background-color: #FFFFFF;">
-		<div class="box">
-			<div style="margin-left:35% ;margin-top: 20%; width: 30%;">
-				<img src="img/logo.png" alt="logo" width="100%">
-			</div>
-		</div>
-		<div id="segmentedControl" class="mui-segmented-control" style="margin-top: 20%;width: 80%;border: #FFFFFF;  margin-left: 10%;">
-			<a class="mui-control-item mui-active" href="#item1mobile">
-				验证码登录
-			</a>
-			<a class="mui-control-item" href="#item2mobile" style="border-left: 0 !important;">
-				密码登录
-			</a>
-		</div>
-		<div class="mui-content-padded" style="width: 80%;margin-left:10% ;margin-top: 10%; ">
-			<div id="item1mobile" class="mui-control-content mui-active">
-				<form class="mui-input">
-					<div class="mui-input">
-						<span class="mui-icon mui-icon-phone"></span>
-						<label>手机号:</label>
-						<input style="width: 70%;  border-bottom: 1px solid rgba(0,0,0,.2) !important;
-    border: 0px;" type="text"
-						 class="mui-input-clear" placeholder="请输入手机号">
-					</div>
-					<div class="mui-input">
-						<span class="mui-icon mui-icon-phone"></span>
-						<label>验证码:</label>
-						<input style="width:45%;border-bottom: 1px solid rgba(0,0,0,.2) !important;
-    border: 0px;" type="text" class="mui-input-clear"
-						 type="text" class="mui-input-numbox" placeholder="请输入验证码">
-						<button style="line-height:24px; width: 23%;" type="button">获取</button>
-					</div>
-					<span style="font-size: 12px;">没有账号？请先<a href="">注册</a>哦</span>
-					<div class="mui-button" style="border: 0px!important;">
-						<button type="button" class="mui-btn mui-btn-primary">登录</button>
-					</div>
-				</form>
-			</div>
-			<div id="item2mobile" class="mui-control-content">
-				<form class="mui-input">
-					<div class="mui-input">
-						<span class="mui-icon mui-icon-phone"></span>
-						<label>手机号:</label>
-						<input style="width:70%;  border-bottom: 1px solid rgba(0,0,0,.2) !important;
-				border: 0px;" type="text" class="mui-input-clear"
-						 placeholder="请输入手机号">
-					</div>
-					<div class="mui-input">
-						<span class="mui-icon mui-icon-phone"></span>
-						<label>密码:</label>
-						<input style="width:65%;border-bottom: 1px solid rgba(0,0,0,.2) !important;
-				border: 0px;" type="text" class="mui-input-clear"
-						 type="text" class="mui-input-numbox" placeholder="请输入密码">
-					</div>
 
-					<div class="mui-button" style="border: 0px!important;">
-						<button type="button" class="mui-btn mui-btn-primary">登录</button>
-					</div>
-				</form>
-			</div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+  <title></title>
+  <script src="js/mui.min.js"></script>
+  <script src="js/vue.js"></script>
+  <link href="css/mui.min.css" rel="stylesheet" />
+  <script type="text/javascript" charset="utf-8">
+    mui.init({
+      subpages: [{
+        url: 'default.html',//根据自己的目录修改
+        id: 'default.html',//随意
+        styles: {
+          top: '0px',
+          bottom: '50px'
+        }
+      }, {
+        url: 'liaotian.html',//根据自己的目录修改
+        id: 'liaotian.html',//随意
+        styles: {
+          top: '0px',
+          bottom: '50px'
+        }
+      }
+      ]
+    });
+    mui.plusReady(function () {
+      plus.webview.getWebviewById("default.html").hide();
+      plus.webview.getWebviewById("liaotian.html").hide();
+    });
+  </script>
+  <script>
+    var de = "default.html";
+    function ccc(index) {
+      // alert(index);
+      var view = plus.webview.getWebviewById(index);
+      var view1 = plus.webview.getWebviewById(de);
+      view1.show();
+      view.show();
+      de = index;
+      // plus.webview.hide(de);		// 隐藏上一个子页面
+      // plus.webview.show(subpages[index]);	// 显示当前点击页面
+      // de = subpages[index]
+    }
+  </script>
+</head>
 
-		</div>
+<body>
 
-	</body>
+  <nav class="mui-bar mui-bar-tab">
+    <a style=" touch-action: pan-y; " class="mui-tab-item mui-active" href="javascript:void(0);"
+      onclick="ccc('default.html')">
+      <span class="mui-icon mui-icon-chat"></span>
+      <span class="mui-tab-label">趣聊</span>
+    </a>
+    <a style=" touch-action: pan-y; " class="mui-tab-item" href="javascript:void(0);" onclick="ccc('liaotian.html')">
+      <span class="mui-icon mui-icon-contact"></span>
+      <span class="mui-tab-label">通讯录</span>
+    </a>
+    <a style=" touch-action: pan-y; " class="mui-tab-item" href="javascript:void(0);">
+      <span class="mui-icon mui-icon-person"></span>
+      <span class="mui-tab-label">我的</span>
+    </a>
+
+  </nav>
+
+</body>
+
 </html>
