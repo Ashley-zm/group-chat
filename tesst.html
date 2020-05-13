@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+  <script src="js/vue.js"></script>
+</head>
+
+<body>
+  <div id="app1">
+    <!-- <div v-model="ph" style="width: 50px;height: 20px;border: 1px solid #111;"></div> -->
+    <input v-model="ph" maxlength="11" placeholder="请输入" type="text">
+    <button @click="tijiao">tijiao</button>
+  </div>
+  <script>
+    var ts = new Vue({
+      el: '#app1',
+      data: {
+        ph: " "
+      },
+      methods: {
+        // 箭头函数定义对象方法不适合用，会将动态的->静态
+        tijiao: function () {
+          console.log(this.ph);
+          alert(this.ph);
+        },
+      },
+    })
+  </script>
+
+</body>
+
+</html>
