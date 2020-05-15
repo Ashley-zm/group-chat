@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.css" rel="stylesheet" />
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+	<script src="js/vue.js"></script>
+</head>
+
+<body>
+
+
+	<header class="mui-bar mui-bar-nav">
+		<!-- <a class="mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+		<a class="mui-icon mui-icon-plus mui-pull-right"></a>
+		<h1 class="mui-title">群&nbsp;&nbsp;&nbsp;&nbsp;聊</h1>
+	</header>
+	<div id="cha" class="mui-content">
+		<div class="mui-input-row mui-search" style=" margin-top: 10px;">
+			<input type="search" class="mui-input-speech mui-input-clear"
+				style="width: 80%;margin-left: 10%;border-radius: 20px;background-color: white;" placeholder="带语音识别的搜索框">
+		</div>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media" v-for="l in lis" @click="lt(l.id,l.qname);">
+				<a href="#">
+					<img style="border-radius: 8px;" class="mui-media-object mui-pull-left" :src="l.qimg">
+					<div class="mui-media-body" style="font-family:'微软雅黑';float: left;width: 60%;">
+						<strong>{{l.qname}}</strong>
+						<p class='mui-ellipsis'>{{l.qintroduce}}</p>
+					</div>
+					<div style="float: right;width: 20%;height: 100%;font-size:x-small;color: #8f8f94;text-align: right;">
+						<div style="width: 100%;height: 50%;">
+							2020/4/22
+						</div>
+						<div style="width: 100%;height: 50%;">
+							<span class="mui-icon mui-icon-micoff" v-show="true"></span>
+						</div>
+					</div>
+				</a>
+			</li>
+
+		</ul>
+	</div>
+
+	<script>
+		var app1 = new Vue({
+			el: "#cha",
+			data: {
+				lis: []
+			},
+			created: function () {
+				var uid = window.localStorage.getItem("id");
+				console.log(uid);
+
+				mui.ajax("http://192.168.1.104:8080/groupChat/TqSelectAllServlet?uid=" + uid, {
+
+					dataType: 'json',//服务器返回json格式数据
+					type: 'post',//HTTP请求类型
+					timeout: 10000,//超时时间设置为10秒；
+					success: function (data) {
+						app1.lis = data;
+						console.log(data);
+						console.log(app1.lis);
+						// for (var i = 0; i < app1.lis.length; i++) {
+						// 	app1.lis[i].qimg = "http://192.168.1.104:8080/group-chat/" + app1.lis[i].qimg;
+						// }
+					},
+					error: function (xhr, type, errorThrown) {
+						//异常处理；
+						//alert(type);
+					}
+				});
+			},
+			methods: {
+				lt: function (id, qname) {
+					window.localStorage.setItem("qid", id);
+					window.localStorage.setItem("qname", qname);
+					// mui.openWindow("liaotian.html", "liaotian.html", {});
+					//window.location.href="liaotian.html";
+				}
+			}
+		});
+	</script>
+
+</body>
+
+</html>
