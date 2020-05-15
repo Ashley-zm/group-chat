@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title></title>
+	<script src="js/vue.js"></script>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet" />
+	<link href="css/index.css" />
+	<script src="js/jquery-3.3.1.js"></script>
+	<style>
+		.mui-control-item.mui-active {
+			border-bottom: 3px solid #007aff;
+			color: #007aff !important;
+			background-color: #fff !important;
+			font-size: 18px;
+			border-left: 0px !important;
+		}
+
+		.mui-btn.mui-btn-primary {
+			margin-top: 30px;
+			width: 80%;
+			margin-left: 7%;
+		}
+
+		.box {
+			margin-top: 0px;
+			width: 100%;
+		}
+
+		#tishi {
+			padding-left: 8px;
+			font-size: 16px;
+			color: #f45d5d;
+			background-color: rgba(244, 93, 93, .1);
+			width: 90%;
+			line-height: 32px;
+			margin-bottom: 5px;
+			display: none;
+		}
+	</style>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+	</script>
+</head>
+
+<body style="background-color: #FFFFFF;">
+	<div class="box">
+		<div style="margin-left:30% ;margin-top: 20%; width: 40%;">
+			<img src="img/logo-g.png" alt="logo" width="100%">
+		</div>
+	</div>
+	<!-- 
+		点击该事件：页面提示：【8mui.min.js:7 [Intervention] Unable to preventDefault inside passive
+		 event listener due to target being treated as passive. See http://www.8sk.cn/article/155.html】 
+		解方法：给您的样式中加入下面的样式即可解决去掉错误提示。
+		{ touch-action: none; }
+	-->
+	<div id="segmentedControl" class="mui-segmented-control"
+		style="margin-top: 20%;width: 80%;border: #FFFFFF; touch-action: none;  margin-left: 10%;">
+		<a id="dl1" class="mui-control-item mui-active" href="#item1mobile">
+			验证码登录
+		</a>
+		<a class="mui-control-item" href="#item2mobile" style="border-left: 0 !important;">
+			密码登录
+		</a>
+	</div>
+	<div id="load" class="mui-content-padded" style="width: 80%;margin-left:13% ;margin-top: 8%; ">
+		<span class="mui-icon mui-icon-close" id="tishi">&nbsp;用户名或密码错误</span>
+		<div id="item1mobile" class="mui-control-content mui-active">
+			<form class="mui-input">
+				<div class="mui-input">
+					<span class="mui-icon mui-icon-phone"></span>
+					<label>手机号:</label>
+					<input id="ph1" v-model="ph1" style="width: 58%;border: 0px;" type="text" class="mui-input-clear"
+						maxlength="11" placeholder="请输入手机号">
+				</div>
+				<div class="mui-input" style="margin-bottom: 10px;">
+					<span class="mui-icon mui-icon-email"></span>
+					<label>验证码:</label>
+					<input id="yzm" style="width:46%;border: 0px;" type="text" class="mui-input-clear" type="text"
+						class="mui-input-numbox" placeholder="请输入验证码">
+					<button style="margin-left: -10px;line-height:27px; width: 19%;" type="button">获取</button>
+				</div>
+				<span style="font-size: 12px;">没有账号？请先<a href="">注册</a>哦</span>
+				<div class="mui-button">
+					<button @click="load1" type="button" class="mui-btn mui-btn-primary">登录</button>
+				</div>
+			</form>
+		</div>
+		<div id="item2mobile" class="mui-control-content">
+			<form class="mui-input">
+				<div class="mui-input">
+					<span class="mui-icon mui-icon-phone"></span>
+					<label>手机号:</label>
+					<input id="ph2" v-model="ph2" style="width:58%;border: 0px;" type="text" placeholder="请输入手机号">
+				</div>
+				<div class="mui-input" style="margin-bottom: 10px;">
+					<span class="mui-icon mui-icon-locked"></span>
+					<label>密码:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input id="mima" v-model="upwd" style="width:58%;border: 0px;" type="password" placeholder="请输入密码">
+				</div>
+				<span style="font-size: 12px;">忘记密码？请先<a href="">找回密码</a>哦</span>
+				<div class="mui-button">
+					<button @click="load2" type="button" class="mui-btn mui-btn-primary">登录</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script>
+		$("#dl1").click(function () {
+			$("#ph2").val("");
+			$("#mima").val("");
+			console.log("hh");
+		})
+
+	</script>
+
+	<script>
+		var appp1 = new Vue({
+			el: '#load',
+			data: {
+				ph1: "",
+				ph2: "",
+				upwd: ""
+			},
+			methods: {
+				// clear() {
+				// 	this.ph2 = "";
+				// 	this.upwd = ""
+				// },
+				load1: function () {
+					if (this.ph1 == null || this.ph1 == "") {
+						alert("请输入手机号");
+					} else if (!(/^1[3456789]\d{9}$/.test(this.ph1))) {
+						alert("手机号码有误，请重填");
+					}
+					else {
+						alert(this.ph1);
+						mui.ajax('http://192.168.1.108:8080/groupChat/phYZMServlet', {
+							dataType: 'json',//服务器返回json格式数据
+							type: 'get',//HTTP请求类型
+							timeout: 10000,//超时时间设置为10秒；
+							headers: { 'Content-Type': 'application/json' },
+							success: function (data) {
+								if (data.id > 0) {
+									//服务器返回响应，根据响应结果，分析是否登录成功；
+									alert(data);
+									localStorage.setItem('yzm', data.msg);
+									// location.href = "tesst.html";
+								} else if (data.msg = "error") {
+									var tishi = document.getElementById("tishi");
+									tishi.style.display = "block";
+									setTimeout(function tishic() {
+										tishi.style.display = "none";
+									}, 2000)
+								}
+							}
+						});
+					}
+				},
+				load2: function () {
+					mui.ajax('http://192.168.1.104:8080/groupChat/LoginServlet?uphone=' + this.ph2 + '&upwd=' + this.upwd, {
+						// data: {
+						// 	uphone: this.ph2,
+						// 	upwd: this.upwd
+						// },
+						dataType: 'json',//服务器返回json格式数据
+						type: 'post',//HTTP请求类型
+						timeout: 10000,//超时时间设置为10秒；
+						headers: { 'Content-Type': 'application/json' },
+						success: function (data) {
+							if (data.id > 0) {
+								//服务器返回响应，根据响应结果，分析是否登录成功；
+								console.log(data)
+								console.log(data.id, data.realname, data.uphone, data.upwd);
+								localStorage.setItem('id', data.id);
+								localStorage.setItem('realname', data.realname);
+								localStorage.setItem('uphone', data.uphone);
+								localStorage.setItem('upwd', data.upwd);
+								location.href = "index.html";
+							} else if (data.msg = "error") {
+								var tishi = document.getElementById("tishi");
+								tishi.style.display = "block";
+								setTimeout(function tishic() {
+									tishi.style.display = "none";
+								}, 2000)
+							}
+						},
+					});
+				},
+			},
+		});
+	</script>
+
+</body>
+
+</html>
