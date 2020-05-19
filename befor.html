@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.css" rel="stylesheet" />
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background: #fff;
+			font-family: Arial, '微软雅黑', '宋体', sans-serif
+		}
+
+		.alert-box {
+			display: block;
+			position: absolute;
+			top: 20px;
+			right: 120px;
+			padding: 180px 85px 22px;
+			border-radius: 10px 10px 0 0;
+			background: transparent;
+
+			width: 0px;
+			color: transparent;
+			text-align: center
+		}
+
+		.alert-box p {
+			margin: 0
+		}
+
+		.alert-circle {
+			position: absolute;
+			top: -50px;
+			left: 111px
+		}
+
+		.alert-sec-circle {
+			stroke-dashoffset: 0;
+			stroke-dasharray: 735;
+			transition: stroke-dashoffset 1s linear
+		}
+
+		.alert-sec-text a {
+			position: absolute;
+			top: 55px;
+			left: 208px;
+			width: 36px;
+			color: #000;
+			font-size: 16px
+		}
+
+		.alert-sec-unit {
+			font-size: 26px
+		}
+
+		.alert-body {
+			margin: 35px 0
+		}
+
+		.alert-head {
+			color: #242424;
+			font-size: 28px
+		}
+
+		.alert-concent {
+			margin: 25px 0 14px;
+			color: #7B7B7B;
+			font-size: 18px
+		}
+
+		.alert-concent p {
+			line-height: 27px
+		}
+
+		.alert-btn {
+			display: block;
+			border-radius: 10px;
+			background-color: #4AB0F7;
+			height: 55px;
+			line-height: 55px;
+			width: 286px;
+			color: #FFF;
+			font-size: 20px;
+			text-decoration: none;
+			letter-spacing: 2px
+		}
+
+		.alert-btn:hover {
+			background-color: #6BC2FF
+		}
+
+		.alert-footer {
+			margin: 0 auto;
+			height: 42px;
+			width: 120px
+		}
+
+		.alert-footer-icon {
+			float: left
+		}
+
+		.alert-footer-text {
+			float: left;
+			border-left: 2px solid #EEE;
+			padding: 3px 0 0 5px;
+			height: 40px;
+			color: #0B85CC;
+			font-size: 12px;
+			text-align: left
+		}
+
+		.alert-footer-text p {
+			color: #7A7A7A;
+			font-size: 22px;
+			line-height: 18px
+		}
+	</style>
+	<script>
+		function ti() {
+
+			// var self=plus.webview.currentWebview();
+
+			// mui.openWindow("index.html","index.html",{});
+			// self.hide();
+			window.location.href = "login.html";
+
+		}
+	</script>
+</head>
+
+<body>
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+	<div style="width: 100%; margin-top: 50%;">
+		<div style="margin-left: 35%; width: 35%;">
+			<img src="img/logo.png" style="width: 100%;" />
+		</div>
+		<div style="margin-left: 20%; width: 60%;margin-top: 50px;">
+			<img src="img/logo1.png" style="width: 100%;" />
+		</div>
+	</div>
+
+
+	<div id="js-alert-box" class="alert-box">
+		<svg class="alert-circle" width="234" height="234">
+			<circle cx="117" cy="117" r="20" fill="#FFF" stroke="#43AEFA" stroke-width="5"></circle>
+			<circle id="js-sec-circle" class="alert-sec-circle" cx="117" cy="117" r="20" fill="transparent" stroke="#F4F1F1"
+				stroke-width="5" transform="rotate(-90 117 117)"></circle>
+			<!-- <text class="alert-sec-unit" x="110" y="125" fill="#BDBDBD">秒</text> -->
+		</svg>
+		<div id="js-sec-text" class="alert-sec-text" onclick="ti();">
+			<a href="javascript:void(0);">跳过</a>
+		</div>
+		<div class="alert-body">
+			<div id="js-alert-head" class="alert-head"></div>
+
+
+		</div>
+
+	</div>
+
+
+	<script type="text/javascript">
+		function alertSet(e) {
+			document.getElementById("js-alert-box").style.display = "block",
+				document.getElementById("js-alert-head").innerHTML = e;
+			var t = 5,
+				n = document.getElementById("js-sec-circle");
+			//document.getElementById("js-sec-text").innerHTML = t,
+			setInterval(function () {
+				if (0 == t) {
+					// location.href="http://www.jq-school.com";
+					// alert("aaaaaa");
+					// var self=plus.webview.currentWebview();
+
+					// mui.openWindow("index.html","index.html",{});
+					// self.hide();
+					window.location.href = "login.html";
+				} else {
+					t -= 1;
+					//document.getElementById("js-sec-text").innerHTML = t;
+					var e = Math.round(t / 5 * 150);
+					n.style.strokeDashoffset = e - 150;
+				}
+			},
+				1000);
+		}
+	</script>
+
+	<script>alertSet('');</script>
+
+
+</body>
+
+</html>
