@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.css" rel="stylesheet" />
+</head>
+
+<body>
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+	<script src="js/vue.js"></script>
+	<header class="mui-bar mui-bar-nav">
+		<!-- <a class="mui-icon mui-icon-left-nav mui-pull-left"></a> -->
+		<a class="mui-icon mui-icon-plus mui-pull-right"></a>
+		<h1 class="mui-title">我的好友</h1>
+	</header>
+	<div id="friend" class="mui-content">
+		<div class="mui-input-row mui-search" style=" margin-top: 10px;">
+			<input v-model="search" type="search" class="mui-input-speech mui-input-clear"
+				style="width: 80%;margin-left: 10%;border-radius: 20px;background-color: white;" placeholder="姓名/手机号">
+		</div>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell" v-for="l in lis">
+				<img style="border-radius: 8px;" class="mui-media-object mui-pull-left" :src="l.fimg" alt="">
+				<div class="mui-media-body" style="font-family:'微软雅黑';float: left;width: 60%;">
+					<p style="color: black;"> {{l.fname}}</p>
+					<p class='mui-ellipsis'> <span class="mui-icon mui-icon-phone "></span> {{l.fphone}}</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<script>
+		var app1 = new Vue({
+			el: "#friend",
+			data: {
+				list: [],
+				/*定义变量装查询输入的字符串*/
+				search: ''
+			},
+			created: function () {
+				var uid = window.localStorage.getItem("id");
+				console.log(uid);
+
+				mui.ajax("http://192.168.1.111:8080/groupChat/FriendServlet?uid=" + uid, {
+
+					dataType: 'json',//服务器返回json格式数据
+					type: 'post',//HTTP请求类型
+					timeout: 10000,//超时时间设置为10秒；
+					success: function (data) {
+						app1.list = data;
+					},
+					error: function (xhr, type, errorThrown) {
+						//异常处理；
+						//alert(type);
+					}
+				});
+			},
+			// 查询功能
+			//  computed比methods效率高，不需要重新渲染页面
+			computed: {
+				lis: function () {
+					var arr = [];
+					for (var i = 0; i < this.list.length; i++) {
+						if (this.list[i].fname.indexOf(this.search) != -1) {
+							arr.push(this.list[i])
+						}
+						else if (this.list[i].fphone.indexOf(this.search) != -1) {
+							arr.push(this.list[i])
+						}
+					}
+					return arr;
+
+				}
+			}
+		});
+	</script>
+
+
+</body>
+
+</html>

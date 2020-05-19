@@ -10,38 +10,41 @@
   <link href="css/mui.min.css" rel="stylesheet" />
   <script type="text/javascript" charset="utf-8">
     mui.init({
-      subpages: [{
-        url: 'default.html',//根据自己的目录修改
-        id: 'default.html',//随意
-        styles: {
-          top: '0px',
-          bottom: '50px'
-        }
-      }, {
-        url: 'liaotian.html',//根据自己的目录修改
-        id: 'liaotian.html',//随意
-        styles: {
-          top: '0px',
-          bottom: '50px'
-        }
-      },
-        // {
-        //   url: 'my.html',//根据自己的目录修改
-        //   id: 'my.html',//随意
-        //   styles: {
-        //     top: '0px',
-        //     bottom: '50px'
-        //   }
-        // }
+      subpages: [
+        {
+          url: 'friends.html',//根据自己的目录修改
+          id: 'friends.html',//随意
+          styles: {
+            top: '0px',
+            bottom: '50px'
+          }
+        },
+        {
+          url: 'my.html',//根据自己的目录修改
+          id: 'my.html',//随意
+          styles: {
+            top: '0px',
+            bottom: '50px'
+          }
+        },
+        {
+          url: 'qlist.html',//根据自己的目录修改
+          id: 'qlist.html',//随意
+          styles: {
+            top: '0px',
+            bottom: '50px'
+          }
+        },
       ]
     });
     mui.plusReady(function () {
-      plus.webview.getWebviewById("default.html").hide();
-      plus.webview.getWebviewById("liaotian.html").hide();
+      plus.webview.getWebviewById("qlist.html").hide();
+      plus.webview.getWebviewById("friends.html").hide();
+      plus.webview.getWebviewById("my.html").hide();
     });
   </script>
   <script>
-    var de = "default.html";
+    var de = "qlist.html";
     function ccc(index) {
       // alert(index);
       var view = plus.webview.getWebviewById(index);
@@ -60,15 +63,15 @@
 
   <nav class="mui-bar mui-bar-tab">
     <a style=" touch-action: pan-y; " class="mui-tab-item mui-active" href="javascript:void(0);"
-      onclick="ccc('default.html')">
+      onclick="ccc('qlist.html')">
       <span class="mui-icon mui-icon-chat"></span>
       <span class="mui-tab-label">趣聊</span>
     </a>
-    <a style=" touch-action: pan-y; " class="mui-tab-item" href="javascript:void(0);" onclick="ccc('liaotian.html')">
+    <a style=" touch-action: pan-y; " class="mui-tab-item" href="javascript:void(0);" onclick="ccc('friends.html')">
       <span class="mui-icon mui-icon-contact"></span>
-      <span class="mui-tab-label">通讯录</span>
+      <span class="mui-tab-label">我的好友</span>
     </a>
-    <a style=" touch-action: pan-y; " class="mui-tab-item" href="javascript:void(0);">
+    <a style=" touch-action: pan-y; " class="mui-tab-item" href="javascript:void(0);" onclick="ccc('my.html')">
       <span class="mui-icon mui-icon-person"></span>
       <span class="mui-tab-label">我的</span>
     </a>

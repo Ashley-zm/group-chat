@@ -58,7 +58,7 @@
 				var uid = window.localStorage.getItem("id");
 				console.log(uid);
 
-				mui.ajax("http://192.168.1.104:8080/groupChat/TqSelectAllServlet?uid=" + uid, {
+				mui.ajax("http://192.168.1.111:8080/groupChat/TqSelectAllServlet?uid=" + uid, {
 
 					dataType: 'json',//服务器返回json格式数据
 					type: 'post',//HTTP请求类型
@@ -79,10 +79,11 @@
 			},
 			methods: {
 				lt: function (id, qname) {
+					console.log(id);
 					window.localStorage.setItem("qid", id);
 					window.localStorage.setItem("qname", qname);
-					// mui.openWindow("liaotian.html", "liaotian.html", {});
-					//window.location.href="liaotian.html";
+					mui.openWindow("liaotian.html", "liaotian.html", {});
+					// window.location.href = "liaotian.html";
 				}
 			}
 		});

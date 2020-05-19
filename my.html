@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.css" rel="stylesheet" />
+	<script src="js/mui.js"></script>
+	<style>
+		#top {
+			padding: 21% 10% 8%;
+			overflow: hidden;
+		}
+
+		.txiang {
+			border-radius: 15%;
+			width: 30%;
+			display: block;
+			float: left;
+			margin-right: 8%;
+		}
+
+		li {
+			margin-top: 10px;
+		}
+
+		span {
+
+			font-size: initial !important;
+		}
+	</style>
+
+</head>
+
+<body>
+	<script src="js/mui.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+	<div id="top" style=" background-color: #fff;">
+		<img class="txiang" src="img/mn.jpg">
+		<h4>腊梅十四</h4>
+		<p style="margin-top: 3%;">手机号:15621825352</p>
+
+	</div>
+	<div id="" class="mui-content">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;" id="ma">
+					<span class="mui-icon mui-icon-spinner mui-spin">&nbsp;&nbsp;&nbsp;二维码名片</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;" id="scan">
+					<span class="mui-icon mui-icon-spinner-cycle mui-spin">&nbsp;&nbsp;&nbsp;扫一扫</span>
+				</a>
+			</li>
+		</ul>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<span class="mui-icon mui-icon-gear">&nbsp;&nbsp;&nbsp;设置</span>
+				</a>
+			</li>
+		</ul>
+
+	</div>
+	<script>
+		document.getElementById('ma').addEventListener('tap', function () {
+			mui.openWindow({
+				url: 'ma.html', //通过URL传参
+				show: {
+					autoShow: true
+				}
+			})
+		})
+		document.getElementById('scan').addEventListener('tap', function () {
+			mui.openWindow({
+				url: 'scan.html', //通过URL传参
+				show: {
+					autoShow: false
+				}
+			})
+		})
+
+	</script>
+
+</body>
+
+</html>
