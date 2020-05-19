@@ -11,7 +11,30 @@
 <body>
 	<script src="js/mui.js"></script>
 	<script type="text/javascript">
-		mui.init()
+
+		mui.init({
+			pullRefresh: {
+				container: "#friend",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				down: {
+					style: 'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+					color: '#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+					contentdown: "下拉可以刷新",//可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					contentover: "释放立即刷新",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+					contentrefresh: "正在刷新...",//可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+					height: '50px',//可选,默认50px.下拉刷新控件的高度,
+					range: '100px', //可选 默认100px,控件可下拉拖拽的范围
+					offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
+					auto: true,//可选,默认false.首次加载自动上拉刷新一次
+					callback: pullRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				}
+			}
+		})
+		function pullRefresh() {
+			setTimeout(function () {
+				location.reload();
+				mui('#friend').pullRefresh().endPulldownToRefresh(); //refresh completed  
+			}, 1000);
+		}
 	</script>
 	<script src="js/vue.js"></script>
 	<header class="mui-bar mui-bar-nav">
@@ -24,17 +47,34 @@
 			<input v-model="search" type="search" class="mui-input-speech mui-input-clear"
 				style="width: 80%;margin-left: 10%;border-radius: 20px;background-color: white;" placeholder="姓名/手机号">
 		</div>
+		<ul class="mui-table-view" style="margin-bottom: 10px;">
+			<li class="mui-table-view-cell">
+				<a class="mui-navigate-right">
+					<img class="mui-media-object mui-pull-left" src="img/add.png" alt="">
+					<p style="line-height: 43px; color: #000; font-size: 15px;">添加朋友</p>
+				</a>
+			</li>
+			<li class="mui-table-view-cell">
+				<a class="mui-navigate-right">
+					<img class="mui-media-object mui-pull-left" src="img/chat.png" alt="">
+					<p style="line-height: 43px; color: #000; font-size: 15px;">群聊</p>
+				</a>
+			</li>
+		</ul>
 		<ul class="mui-table-view">
 			<li class="mui-table-view-cell" v-for="l in lis">
 				<img style="border-radius: 8px;" class="mui-media-object mui-pull-left" :src="l.fimg" alt="">
 				<div class="mui-media-body" style="font-family:'微软雅黑';float: left;width: 60%;">
 					<p style="color: black;"> {{l.fname}}</p>
-					<p class='mui-ellipsis'> <span class="mui-icon mui-icon-phone "></span> {{l.fphone}}</p>
+					<p style="font-size: 15px;color: #000;" class='mui-ellipsis'> <span class="mui-icon mui-icon-phone"
+							style="color: #007aff;"></span> {{l.fphone}}
+					</p>
 				</div>
 			</li>
 		</ul>
 	</div>
 	<script>
+
 		var app1 = new Vue({
 			el: "#friend",
 			data: {
@@ -44,7 +84,8 @@
 			},
 			created: function () {
 				var uid = window.localStorage.getItem("id");
-				console.log(uid);
+				var uimg = window.localStorage.getItem("uimg");
+				console.log(uid, uimg);
 
 				mui.ajax("http://192.168.1.111:8080/groupChat/FriendServlet?uid=" + uid, {
 
