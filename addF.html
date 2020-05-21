@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="css/mui.css" rel="stylesheet" />
+	<style>
+		#top {
+			padding: 28% 12% 8%;
+			overflow: hidden;
+			height: 243px;
+		}
+
+		.txiang {
+			border-radius: 15%;
+			/* width: 30%; */
+			width: 92px;
+			height: 80px;
+			display: block;
+			float: left;
+			margin-right: 8%;
+		}
+
+		.btn {
+			margin-top: 50px;
+		}
+	</style>
+	<script>
+
+		function xuanRan() {
+
+		};
+	</script>
+</head>
+
+<body>
+	<script src="js/mui.js"></script>
+	<script src="js/vue.js"></script>
+	<script type="text/javascript">
+		mui.init()
+	</script>
+
+</body>
+<div id="add">
+	<div id="top" style=" background-color: #fff;">
+		<img class="txiang" :src="uimg">
+		<h4>{{realname}}😀</h4>
+		<p style="margin-top: 6%;">手机号:{{uphone}}</p>
+	</div>
+	<div class="mui-content">
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell">
+				<a class="mui-navigate-right" href="#popover" id="openPopover" class="mui-btn mui-btn-primary mui-btn-block">
+					<span>设置备注</span>
+				</a>
+			</li>
+		</ul>
+		<div class="btn">
+			<button @click="cli" style="left: 14%; position: relative;width: 70%;" type="button"
+				class="mui-btn mui-btn-primary">添加好友</button>
+		</div>
+	</div>
+	<!-- 弹出菜单
+		方式一：mui框架内置菜单插件---.mui-popover,使用锚点方式，简洁
+	-->
+	<div id="popover" class="mui-popover" style="padding:22px 20px;">
+		<ul class="mui-table-view">
+			<span>备注名：</span>
+			<input id="mima" v-model="upwd" style="width:58%;border: 0px;" type="password" placeholder="新的备注名称">
+			<button style="left: 32%; width: 45%;" type="button" class="mui-btn mui-btn-primary">提交</button>
+		</ul>
+	</div>
+</div>
+<script>
+
+	// 方式二：js控制弹出菜单
+	// mui('.mui-popover').popover('toggle'.document.getElementById("openPopover"));
+
+	// 获取扫码结果
+	var uid = localStorage.getItem("uid");
+	var uphone = localStorage.getItem("uphone");
+	var realname = localStorage.getItem("realname");
+	var uimg = localStorage.getItem("uimg");
+	var app1 = new Vue({
+		el: "#add",
+		data: {
+			uid: uid,
+			uphone: uphone,
+			realname: realname,
+			uimg: uimg
+		},
+		methods: {
+			cli: function () {
+				mui.ajax('http://192.168.1.111:8080/groupChat/明天写?uid=' + this.uid, {
+					dataType: 'json',
+					type: 'post',
+					timeout: 1000,
+					headers: { 'Content-Type': 'application/json' },
+					success: function (msg) {
+						if (msg == 'success') {
+							setTimeout(mui.alter('添加成功'), 2000);
+
+						} else {
+							mui.alter('error');
+						}
+					}
+
+				})
+			}
+		},
+
+	})
+</script>
+
+</html>

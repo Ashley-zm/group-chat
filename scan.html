@@ -10,6 +10,7 @@
 	<script src="js/mui.js"></script>
 	<link href="css/mui.min.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/common.js"></script>
+	<script src="js/jquery-3.3.1.js"></script>
 
 	<script type="text/javascript">
 		var ws = null, wo = null;
@@ -28,54 +29,127 @@
 			}, false);
 			// 显示页面并关闭等待框
 			ws.show('pop-in');
+			// wo.evalJS('closeWaiting()');
 		}
 		document.addEventListener('plusready', plusReady, false);
 
 		// 二维码扫描成功
 		function onmarked(type, result, file) {
-			switch (type) {
-				case plus.barcode.QR:
-					type = 'QR';
-					break;
-				case plus.barcode.EAN13:
-					type = 'EAN13';
-					break;
-				case plus.barcode.EAN8:
-					type = 'EAN8';
-					break;
-				default:
-					type = '其它' + type;
-					break;
-			}
-			result = result.replace(/\r\n/g, '');
-			//var uid=window.localStorage.getItem("uid");
-			//var ur1=result;
-			mui.toast(result, { duration: 'long', type: '' });
 
-			mui.alert(result, "通知", "朕知道了", "", "div");
-			var uid = window.localStorage.getItem("uid");
-			result = result + "&uid="
-
-			mui.ajax(result, {
-
+			alert("result=" + result);
+			var urls = 'http://192.168.1.112:8080/groupChat/' + result;//http://192.168.1.112:8080/groupChat/SelectTuserServlet?uid=" + uid
+			// // var uid = result.slice(result.indexOf('?') + 1);//获取问号后所有的字符串
+			mui.ajax(urls, {
 				dataType: 'json',//服务器返回json格式数据
-				type: 'get',//HTTP请求类型
+				type: 'post',//HTTP请求类型
 				timeout: 10000,//超时时间设置为10秒；
 				success: function (data) {
-					alert("添加成功");
-					mui.back();//后退键
+					var data1 = JSON.stringify(data);// 转成JSON格式
+					alert(data1);
+					alert(data1.realname);
+					alert(data1[3]);
+					alert(data1[0].realname);
+					alert(data.realname);
+
+					back();//返回上一页
+					//跳转到单据信息界面  
+					mui.openWindow({
+						url: "addF.html",
+						id: "addF",
+						extras: {
+							// uid: ,
+						},
+						waiting: {
+							title: '正在加载...', //等待对话框上显示的提示内容  
+						}
+					});
+					// mui.back();//后退键
 				},
 				error: function (xhr, type, errorThrown) {
 					//异常处理；
 					//alert(type);
 				}
 			});
+
+
+
+
+			// switch (type) {
+			// 	case plus.barcode.QR:
+			// 		type = 'QR';
+			// 		break;
+			// 	case plus.barcode.EAN13:
+			// 		type = 'EAN13';
+			// 		break;
+			// 	case plus.barcode.EAN8:
+			// 		type = 'EAN8';
+			// 		break;
+			// 	default:
+			// 		type = '其它' + type;
+			// 		break;
+			// }
+			// result = result.replace(/\r\n/g, '');
+			// mui.ajax(result, {
+			// 	dataType: 'json',//服务器返回json格式数据
+			// 	type: 'post',//HTTP请求类型
+			// 	timeout: 10000,//超时时间设置为10秒；
+			// 	success: function (data) {
+			// 	},
+			// 	error: function (xhr, type, errorThrown) {
+			// 		//异常处理；
+			// 		//alert(type);
+			// 	}
+			// });
+			// // var uid = window.localStorage.getItem("uid");
+			// // var ur1 = result;
+			// alert(result);
+
+			// back();//返回上一页
+			// plus.runtime.openURL(result);
+
+			// if (result.indexOf('http://') == 0 || result.indexOf('https://') == 0) {
+			// 	plus.nativeUI.confirm(result, function (i) {
+			// 		if (i.index == 0) {
+
+			// 			back();//返回上一页
+			// 			// plus.runtime.openURL(result);
+
+			// 		} else {
+			// 			back();//返回上一页
+			// 		}
+			// 		//跳转到单据信息界面  
+			// 		mui.openWindow({
+			// 			url: "addF.html",
+			// 			id: "addF",
+			// 			extras: {
+			// 				// uid: this.id,
+			// 			},
+			// 			waiting: {
+			// 				title: '正在加载...', //等待对话框上显示的提示内容  
+			// 			}
+			// 		});
+			// 		back();//返回上一页
+			// 	}, '', ['打开', '取消']);
+			// } else {
+			// 	back();//返回上一页
+			// 	plus.nativeUI.alert(result);
+			// }
+
+
+			// mui.toast(result, { duration: 'long', type: '' });
+
+			// mui.alert(result, "通知", "朕知道了", "", "div");
+			// var uid = window.localStorage.getItem("uid");
+			// result = result + "&uid="
+
+
+
 			//alert(type +"','"+ result +"','"+ file);
 			//back();
 		}
 		// 创建子窗口
 		function createSubview() {
-			//
+
 		}
 		// 从相册中选择二维码图片 
 		function scanPicture() {
@@ -88,13 +162,13 @@
 			});
 		}
 	</script>
-	<link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+	<link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
 	<style type="text/css">
 		#bcid {
 			width: 100%;
 			position: absolute;
 			top: 0px;
-			bottom: 0px;
+			bottom: 80px;
 			text-align: center;
 		}
 
@@ -103,18 +177,49 @@
 			font-weight: bold;
 			text-shadow: 0px -1px #103E5C;
 		}
+
+		footer {
+			width: 100%;
+			position: absolute;
+			bottom: 0px;
+			line-height: 44px;
+			text-align: center;
+			color: #FFF;
+		}
+
+		.fbt {
+			float: left;
+			width: 12%;
+			border-radius: 100%;
+			background-color: #888;
+			margin-bottom: 5%;
+		}
+
+		.fbt:active {
+			-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+			box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.5);
+		}
 	</style>
 </head>
 
-<body style="background-color:#000000;">
+<body style="background-color:#333; ">
 	<!-- href="javascript:void(0);" -->
 	<a class="mui-icon mui-icon-left-nav mui-pull-left" href="javascript:history.back()" onclick="back();"
 		style="color: white;float: left;  height: 2.1875rem;margin-left: 0px;margin-top:0px;"></a>
 
-	<div id="bcid">
-		<div style="height:40%"></div>
-		<p class="tip">...载入中...</p>
+	<div id="bcid"">
+		<div style=" height:40%"></div>
+	<p class="tip">...载入中...</p>
 	</div>
+	<div style="position:relative; top: 80%;">扫描二维码</div>
+	<footer>
+		<div class="fbt" onclick="back()" style="margin-left: 10%;">
+			<span class="mui-icon mui-icon-closeempty"></span>
+		</div>
+		<div class="fbt" onclick="scanPicture()" style="position:absolute; right: 10%;">
+			<span class="mui-icon mui-icon-image"></span>
+		</div>
+	</footer>
 </body>
 
 </html>

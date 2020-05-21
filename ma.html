@@ -1,113 +1,102 @@
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>二维码</title>
-	<meta name="description" content="" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<title></title>
+	<script src="js/vue.js"></script>
+	<script src="js/mui.min.js"></script>
+	<link href="css/mui.min.css" rel="stylesheet" />
 </head>
 
-<body onload="creat();">
-
+<body>
 	<script type="text/javascript" src="js/jquery-3.3.1.js"></script>
 	<script type="text/javascript" src="js/jquery.qrcode.js"></script>
 	<script type="text/javascript" src="js/qrcode.js"></script>
-	<link href="css/mui.css" rel="stylesheet" />
-	<script src="js/mui.js"></script>
 	<style type="text/css">
-		/* * {
-			margin: 0;
-			padding: 0;
+		#demo {
+			padding: 10px;
 			list-style-type: none;
+			background-color: #fff;
+			width: 80%;
+			height: 350px;
+			margin: 200px 10%;
 		}
 
-		a,
-		img {
-			border: 0;
-			text-decoration: none;
+		#qrcodeTable {
+			margin-left: 32px;
 		}
 
-		a:hover {
-			text-decoration: underline;
+		.mui-table-view:before {
+			background-color: #fff;
 		}
 
-		body {
-			font: 12px/180% Arial, Helvetica, sans-serif, "新宋体";
-		}
-
-		
-
-		.demo h2 {
-			font-size: 18px;
-			height: 50px;
-			text-align: center;
-		}
-
-		.demo input {
-			width: 198px;
-			outline: medium;
-			border: 1px solid #336699;
-		}
-
-		.demo a {
-			width: 200px;
-			height: 24px;
-			line-height: 24px;
-			text-align: center;
-			letter-spacing: 4px;
-			background: #336699;
-			color: #fff;
-			font-weight: bold;
-			display: block;
-			margin: 5px 0;
-		} */
-		.demo {
-			width: 400px;
-			margin: 140px auto;
-			margin-top: 10px;
+		.mui-table-view:after {
+			background-color: #fff;
 		}
 	</style>
+	<script>
+		mui.init({
+			beforeback: function () {
+				//获得父页面的webview
+				var list = plus.webview.currentWebview().opener();
+				//触发列表界面的自定义事件（refresh）,从而进行数据刷新   
+				mui.fire(list, 'refresh');
+				//返回true，继续页面关闭逻辑   
+				return true;
+			}
+		})
+	</script>
 	<header class="mui-bar mui-bar-nav">
-		<a class="mui-icon mui-icon-left-nav mui-pull-left" href="javascript:history.back()"></a>
+		<a class="mui-icon mui-icon-left-nav mui-pull-left" onclick="mui.back()"></a>
 		<!-- <a class="mui-icon mui-icon-plus mui-pull-right"></a> -->
 		<h1 class="mui-title">二维码名片</h1>
 	</header>
-	<div class="demo">
-		<!-- <input type="text" id="url" value="http://www.17sucai.com"/>
-	<a href="javascript:void();" onclick="creat();">生成</a> -->
-		<h2>拿手机扫一扫</h2>
+	<div id="demo">
+		<ul class="mui-table-view" style="margin-bottom: 10px;">
+			<li class="mui-table-view-cell">
+				<img class="mui-media-object mui-pull-left" :src="uimg" style="border-radius: 10px;">
+				<p style="line-height: 43px; color: #000; font-size: 15px;">{{rname}}</p>
+			</li>
+		</ul>
 		<div id="qrcodeTable"></div>
+		<p style="font-size: 12px;margin-left: 36px;margin-top: 17px;">扫一扫上面的二维码图案，加我好友</p>
 	</div>
 
 	<script type="text/javascript">
-		function creat() {
-			$("#qrcodeTable").html("");
-			var uid = window.localStorage.getItem("uid");
-			var qid = window.localStorage.getItem("qid");
-			qid = 1;
-			// 接口
-			var url = "http://www.baidu.com?qid=" + qid;
+		// mui.plusReady(function () {
+		// 	/***
+		// 	 * 获取上一个页面所传的id值
+		// 	 *问题是：怎么在mui.plusReady之外获取到里面的定义的变量
+		// 	 */
+		// 	var self = plus.webview.currentWebview();//获取当前窗体对象
+		// 	uid = self.uid;//接收A页面传入的id参数值
+		// 	alert(uid);
+		// });
+		$("#qrcodeTable").html("");
+		var uid = window.localStorage.getItem("id");
+		var realname = window.localStorage.getItem("realname");
+		var uimg = window.localStorage.getItem("uimg");
+		var app1 = new Vue({
+			el: "#demo",
+			data: {
+				rname: realname,
+				uimg: uimg
+			}
+		})
+		// 接口
+		console.log("uid" + uid)
 
-			$("#qrcodeTable").qrcode({
-				render: "table",
-				text: url,
-				width: "400",
-				height: "400"
-			});
+		var url = "SelectTuserServlet?uid=" + uid;
+		console.log(url);
 
-		}
-
-// $(document).ready(function(){
-
-// 	$("#qrcodeTable").qrcode({
-// 		render	: "table",
-// 		text	: "http://www.17sucai.com",
-// 		width:"200",
-// 		height:"200"
-// 	});	
-
-// });
+		$("#qrcodeTable").qrcode({
+			render: "table",
+			text: url,
+			width: "200",
+			height: "200"
+		});
 	</script>
 
 </body>

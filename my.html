@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<link href="css/mui.css" rel="stylesheet" />
 	<script src="js/mui.js"></script>
+	<script src="js/vue.js"></script>
 	<style>
 		#top {
 			padding: 21% 10% 8%;
@@ -15,7 +16,9 @@
 
 		.txiang {
 			border-radius: 15%;
-			width: 30%;
+			/* width: 30%; */
+			width: 92px;
+			height: 80px;
 			display: block;
 			float: left;
 			margin-right: 8%;
@@ -38,53 +41,109 @@
 	<script type="text/javascript">
 		mui.init()
 	</script>
-	<div id="top" style=" background-color: #fff;">
-		<img class="txiang" src="img/mn.jpg">
-		<h4>腊梅十四</h4>
-		<p style="margin-top: 3%;">手机号:15621825352</p>
+	<div id="my">
 
-	</div>
-	<div id="" class="mui-content">
-		<ul class="mui-table-view">
-			<li class="mui-table-view-cell mui-media">
-				<a href="javascript:;" id="ma">
-					<span class="mui-icon mui-icon-spinner mui-spin">&nbsp;&nbsp;&nbsp;二维码名片</span>
-				</a>
-			</li>
-		</ul>
-		<ul class="mui-table-view">
-			<li class="mui-table-view-cell mui-media">
-				<a href="javascript:;" id="scan">
-					<span class="mui-icon mui-icon-spinner-cycle mui-spin">&nbsp;&nbsp;&nbsp;扫一扫</span>
-				</a>
-			</li>
-		</ul>
-		<ul class="mui-table-view">
-			<li class="mui-table-view-cell mui-media">
-				<a href="javascript:;">
-					<span class="mui-icon mui-icon-gear">&nbsp;&nbsp;&nbsp;设置</span>
-				</a>
-			</li>
-		</ul>
+		<div id="top" style=" background-color: #fff;">
+			<img class="txiang" :src="uimg">
+			<h4>{{realname}}😀</h4>
+			<p style="margin-top: 3%;">手机号:{{uphone}}</p>
+		</div>
 
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" id="ma" @click="ma">
+						<span class="mui-icon mui-icon-spinner mui-spin" style="color: #259265;">&nbsp;&nbsp;&nbsp;</span>
+						<span>二维码名片</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" id="scan" @click="sao(uid,realname)">
+						<span class="mui-icon mui-icon-spinner-cycle mui-spin" style="color: #FB6F18;">&nbsp;&nbsp;&nbsp;</span>
+						<span>扫一扫</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;">
+						<span class="mui-icon mui-icon-gear" style="color: #007aff;">&nbsp;&nbsp;&nbsp;</span>
+						<span>设置</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="javascript:;" @click="out">
+						<span class="mui-icon mui-icon-loop" style="color: #723ada;">&nbsp;&nbsp;&nbsp;</span>
+						<span>退出登录</span>
+					</a>
+				</li>
+			</ul>
+		</div>
 	</div>
 	<script>
-		document.getElementById('ma').addEventListener('tap', function () {
-			mui.openWindow({
-				url: 'ma.html', //通过URL传参
-				show: {
-					autoShow: true
-				}
-			})
+		window.addEventListener('refresh', function (e) {
+
+			//刷新调用方法
+			location.reload();
 		})
-		document.getElementById('scan').addEventListener('tap', function () {
-			mui.openWindow({
-				url: 'scan.html', //通过URL传参
-				show: {
-					autoShow: false
-				}
-			})
+		var img = window.localStorage.getItem("uimg");
+		// console.log(img);
+		// alert(window.localStorage.getItem("id"));
+		// 注意img的路径渲染
+		var app1 = new Vue({
+			el: "#my",
+			data: {
+				uid: window.localStorage.getItem("id"),
+				realname: window.localStorage.getItem("realname"),
+				uphone: window.localStorage.getItem("uphone"),
+				upwd: window.localStorage.getItem("upwd"),
+				uimg: img
+			},
+			methods: {
+				ma: function () {
+					/*
+					此处本来想页面间传参的，由于登录时已经存储到前端了
+					所以其余相关子页面好像并不需要在进行传参
+					解决了：传参遇到的各种事情，mui参数提不出来等问题
+					*/
+					// window.localStorage.setItem("id", this.uid);
+					// window.localStorage.setItem("realname", this.realname);
+					// var id = this.uid;
+					mui.openWindow({
+						url: 'ma.html',
+						id: 'ma.html',
+					})
+				},
+				sao: function () {
+					mui.openWindow({
+						url: 'scan.html',
+						id: 'scan.html',
+						style: {},
+						extras: {}
+					})
+				},
+				out: function () {
+					mui.confirm('确定退出登录？', '提示', ['确定', '取消'], function (e) {
+						if (e.index == 0) {
+							localStorage.clear();
+							plus.runtime.restart();
+						}
+					}, 'div')
+				},
+			},
 		})
+		// document.getElementById('ma').addEventListener('tap', function () {
+		// 	mui.openWindow({
+		// 		url: 'ma.html', //通过URL传参
+		// 		show: {
+		// 			autoShow: true
+		// 		}
+		// 	})
+		// })
 
 	</script>
 

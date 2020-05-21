@@ -87,7 +87,7 @@
 				var uimg = window.localStorage.getItem("uimg");
 				console.log(uid, uimg);
 
-				mui.ajax("http://192.168.1.111:8080/groupChat/FriendServlet?uid=" + uid, {
+				mui.ajax("http://192.168.1.112:8080/groupChat/FriendServlet?uid=" + uid, {
 
 					dataType: 'json',//服务器返回json格式数据
 					type: 'post',//HTTP请求类型

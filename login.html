@@ -139,7 +139,7 @@
 					}
 					else {
 						alert(this.ph1);
-						mui.ajax('http://192.168.1.111:8080/groupChat/phYZMServlet', {
+						mui.ajax('http://192.168.1.112:8080/groupChat/phYZMServlet', {
 							dataType: 'json',//服务器返回json格式数据
 							type: 'get',//HTTP请求类型
 							timeout: 10000,//超时时间设置为10秒；
@@ -162,7 +162,7 @@
 					}
 				},
 				load2: function () {
-					mui.ajax('http://192.168.1.111:8080/groupChat/LoginServlet?uphone=' + this.ph2 + '&upwd=' + this.upwd, {
+					mui.ajax('http://192.168.1.112:8080/groupChat/LoginServlet?uphone=' + this.ph2 + '&upwd=' + this.upwd, {
 						// data: {
 						// 	uphone: this.ph2,
 						// 	upwd: this.upwd
@@ -175,11 +175,12 @@
 							if (data.id > 0) {
 								//服务器返回响应，根据响应结果，分析是否登录成功；
 								console.log(data)
-								console.log(data.id, data.realname, data.uphone, data.upwd);
+								console.log(data.id, data.realname, data.uphone, data.upwd, data.uimg);
 								localStorage.setItem('id', data.id);
 								localStorage.setItem('realname', data.realname);
 								localStorage.setItem('uphone', data.uphone);
 								localStorage.setItem('upwd', data.upwd);
+								localStorage.setItem('uimg', data.uimg);
 								location.href = "index.html";
 							} else if (data.msg = "error") {
 								var tishi = document.getElementById("tishi");

@@ -8,14 +8,34 @@
 	<link href="css/mui.css" rel="stylesheet" />
 	<script src="js/mui.js"></script>
 	<script type="text/javascript">
-		mui.init()
+		mui.init({
+			pullRefresh: {
+				container: "#cha",//下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				down: {
+					style: 'circle',//必选，下拉刷新样式，目前支持原生5+ ‘circle’ 样式
+					color: '#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+					contentdown: "下拉可以刷新",//可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					contentover: "释放立即刷新",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+					contentrefresh: "正在刷新...",//可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+					height: '50px',//可选,默认50px.下拉刷新控件的高度,
+					range: '100px', //可选 默认100px,控件可下拉拖拽的范围
+					offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
+					auto: true,//可选,默认false.首次加载自动上拉刷新一次
+					callback: pullRefresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				}
+			}
+		})
+		function pullRefresh() {
+			setTimeout(function () {
+				location.reload();
+				mui('#friend').pullRefresh().endPulldownToRefresh(); //refresh completed  
+			}, 1000);
+		}
 	</script>
 	<script src="js/vue.js"></script>
 </head>
 
 <body>
-
-
 	<header class="mui-bar mui-bar-nav">
 		<!-- <a class="mui-icon mui-icon-left-nav mui-pull-left"></a> -->
 		<a class="mui-icon mui-icon-plus mui-pull-right"></a>
@@ -23,8 +43,8 @@
 	</header>
 	<div id="cha" class="mui-content">
 		<div class="mui-input-row mui-search" style=" margin-top: 10px;">
-			<input type="search" class="mui-input-speech mui-input-clear"
-				style="width: 80%;margin-left: 10%;border-radius: 20px;background-color: white;" placeholder="带语音识别的搜索框">
+			<input v-model="search" type="search" class="mui-input-speech mui-input-clear"
+				style="width: 80%;margin-left: 10%;border-radius: 20px;background-color: white;" placeholder="群名称">
 		</div>
 		<ul class="mui-table-view">
 			<li class="mui-table-view-cell mui-media" v-for="l in lis" @click="lt(l.id,l.qname);">
@@ -36,7 +56,7 @@
 					</div>
 					<div style="float: right;width: 20%;height: 100%;font-size:x-small;color: #8f8f94;text-align: right;">
 						<div style="width: 100%;height: 50%;">
-							2020/4/22
+							2020/5/20
 						</div>
 						<div style="width: 100%;height: 50%;">
 							<span class="mui-icon mui-icon-micoff" v-show="true"></span>
@@ -52,23 +72,25 @@
 		var app1 = new Vue({
 			el: "#cha",
 			data: {
-				lis: []
+				list: [],
+				/*定义变量装查询输入的字符串*/
+				search: ''
 			},
 			created: function () {
 				var uid = window.localStorage.getItem("id");
 				console.log(uid);
 
-				mui.ajax("http://192.168.1.111:8080/groupChat/TqSelectAllServlet?uid=" + uid, {
+				mui.ajax("http://192.168.1.112:8080/groupChat/TqSelectAllServlet?uid=" + uid, {
 
 					dataType: 'json',//服务器返回json格式数据
 					type: 'post',//HTTP请求类型
 					timeout: 10000,//超时时间设置为10秒；
 					success: function (data) {
-						app1.lis = data;
+						app1.list = data;
 						console.log(data);
-						console.log(app1.lis);
-						// for (var i = 0; i < app1.lis.length; i++) {
-						// 	app1.lis[i].qimg = "http://192.168.1.104:8080/group-chat/" + app1.lis[i].qimg;
+						console.log(app1.list);
+						// for (var i = 0; i < app1.list.length; i++) {
+						// 	app1.list[i].qimg = "http://192.168.1.112:8080/group-chat/" + app1.list[i].qimg;
 						// }
 					},
 					error: function (xhr, type, errorThrown) {
@@ -76,6 +98,19 @@
 						//alert(type);
 					}
 				});
+			},
+			// 查询功能
+			//  computed比methods效率高，不需要重新渲染页面
+			computed: {
+				lis: function () {
+					var arr = [];
+					for (var i = 0; i < this.list.length; i++) {
+						if (this.list[i].qname.indexOf(this.search) != -1) {
+							arr.push(this.list[i])
+						}
+					}
+					return arr;
+				}
 			},
 			methods: {
 				lt: function (id, qname) {
